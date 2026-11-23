@@ -1,0 +1,999 @@
+{
+  "info": {
+    "_postman_id": "87d5395f-775a-4a9f-8048-9c090d5c80a5",
+    "name": "Trello API Tsting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57440524",
+    "_collection_link": "https://go.postman.co/collection/57440524-87d5395f-775a-4a9f-8048-9c090d5c80a5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Members",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is JSON\", function () {\r",
+                  "    pm.response.to.be.json;\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"User ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Username exists\", function () {\r",
+                  "    pm.expect(response.username).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Full name exists\", function () {\r",
+                  "    pm.expect(response.fullName).to.exist;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/members/me?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "members",
+                "me"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Boards",
+      "item": [
+        {
+          "name": "Get my Boards",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", function () {\r",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"At least one board exists\", function () {\r",
+                  "    pm.expect(pm.response.json().length).to.be.above(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/members/me/boards?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "members",
+                "me",
+                "boards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}",
+                  "type": "text"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Board",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Board ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Board name is correct\", function () {\r",
+                  "    pm.expect(response.name).to.eql(\"Trello Test Board\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"boardId\", response.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/?key={{key}}&token={{token}}&name=Trello Test Board",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Trello Test Board"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Board",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Board ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Board name exists\", function () {\r",
+                  "    pm.expect(response.name).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Board ID matches environment\", function () {\r",
+                  "    pm.expect(response.id).to.eql(\r",
+                  "        pm.environment.get(\"boardId\")\r",
+                  "    );\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Board-Lists",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "    pm.expect(response).to.be.an(\"array\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}/lists?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}",
+                "lists"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Board Name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Board ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Board name was updated\", function () {\r",
+                  "    pm.expect(response.name).to.eql(\"New Trello Board\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}?key={{key}}&token={{token}}&name=New Trello Board",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "New Trello Board"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Board",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Lists",
+      "item": [
+        {
+          "name": "Create New List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"List ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"listId\", response.id);\r",
+                  "\r",
+                  "console.log(\"Saved list ID:\", pm.environment.get(\"listId\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}/lists?name=Week One&key={{key}}&token={{token}}&color=green",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}",
+                "lists"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Week One"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "color",
+                  "value": "green"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create New List1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"List ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"listId1\", response.id);\r",
+                  "\r",
+                  "console.log(\"Saved list ID:\", pm.environment.get(\"listId1\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}/lists?name=Week Two&key={{key}}&token={{token}}&color=red",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}",
+                "lists"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Week Two"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "color",
+                  "value": "red",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cards",
+      "item": [
+        {
+          "name": "Create First Card",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Card ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"cardId\", response.id);\r",
+                  "\r",
+                  "console.log(\"Saved Card ID:\", pm.environment.get(\"cardId\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base url}}/cards?idList={{listId}}&key={{key}}&token={{token}}&name=Post a video to LinkedIn",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "idList",
+                  "value": "{{listId}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Post a video to LinkedIn"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Second Card",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/cards?idList={{listId1}}&key={{key}}&token={{token}}&name=Testing API",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "idList",
+                  "value": "{{listId1}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Testing API"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Third Card",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base url}}/cards?idList={{listId}}&key={{key}}&token={{token}}&name=Task",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "idList",
+                  "value": "{{listId}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Task"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cards",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base url}}/lists/{{listId}}/cards?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "lists",
+                "{{listId}}",
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Checklist",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Checklist ID exists\", function () {\r",
+                  "    pm.expect(response.id).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"checklist Id\", response.id);\r",
+                  "\r",
+                  "console.log(\"Saved checklist ID:\", pm.environment.get(\"checklistId\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/checklists?idCard={{cardId}}&key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "checklists"
+              ],
+              "query": [
+                {
+                  "key": "idCard",
+                  "value": "{{cardId}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Cheackitem",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/checklists/{{checklist Id}}/checkItems?name=Postman project&key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "checklists",
+                "{{checklist Id}}",
+                "checkItems"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Postman project"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Attachment on Card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base url}}/cards/{{cardId}}/attachments?key={{key}}&token={{token}}&url=https://www.linkedin.com/in/markos-youssef",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "cards",
+                "{{cardId}}",
+                "attachments"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                },
+                {
+                  "key": "url",
+                  "value": "https://www.linkedin.com/in/markos-youssef"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Move all cards in list",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/lists/{{listId}}/moveAllCards?idBoard={{boardId}}&idList={{listId1}}&key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "lists",
+                "{{listId}}",
+                "moveAllCards"
+              ],
+              "query": [
+                {
+                  "key": "idBoard",
+                  "value": "{{boardId}}"
+                },
+                {
+                  "key": "idList",
+                  "value": "{{listId1}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Labels",
+      "item": [
+        {
+          "name": "Create Label",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/labels?name=High&color=pink&idBoard={{boardId}}&key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "labels"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "High"
+                },
+                {
+                  "key": "color",
+                  "value": "pink"
+                },
+                {
+                  "key": "idBoard",
+                  "value": "{{boardId}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/labels?name=Minor &color=sky&idBoard={{boardId}}&key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "labels"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Minor "
+                },
+                {
+                  "key": "color",
+                  "value": "sky"
+                },
+                {
+                  "key": "idBoard",
+                  "value": "{{boardId}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Labels",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base url}}/boards/{{boardId}}/labels?key={{key}}&token={{token}}",
+              "host": [
+                "{{base url}}"
+              ],
+              "path": [
+                "boards",
+                "{{boardId}}",
+                "labels"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
